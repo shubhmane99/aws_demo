@@ -1,0 +1,33 @@
+step 1 : create IAM user
+step 2 ; define rules - AmazonEcr
+step 3 : create EC2 instance and security group of ssl and http
+step 4 : create docker image at local
+step 5 : create reository in ECR
+step 6 : push docker image to ECR
+        - install aws cli
+        - curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"                      
+        sudo installer -pkg AWSCLIV2.pkg -target /
+        - aws --version
+        - aws configure
+            - put iam user access key id , and secret key 
+            - put region 
+        - put ECR command of login
+        - push docker image to ECR
+step 7 : install Docker on EC2
+        - sudo yum install docker
+        - sudo systemctl status docker
+        - sudo systemctl start docker
+        - sudo systemctl status docker
+        - docker --version
+        - docker images
+        - sudo usermod -aG docker ec2-user
+        - connect ec2 to ECR
+            - sudo yum install awscli -y
+            - aws configure
+            - AWS Access Key ID: xxxx
+            - AWS Secret Access Key: xxxx
+            - Default region name: ap-south-1
+            - Default output format: json
+step 7 : login to ECR
+step 8 : pull image from ECR -> docker pull 532523613496.dkr.ecr.eu-north-1.amazonaws.com/node-app:latest
+step 9 : run the image docker run -d -p 80:3000 --name node-app 532523613496.dkr.ecr.eu-north-1.amazonaws.com/node-app:latest

@@ -1,0 +1,54 @@
+step 1 : run two docker containers(same app , diffrent port)
+        - docker run -d -p 3001:3000 --name app1 myapp
+        - docker run -d -p 3002:3000 --name app2 myapp
+        - docker ps
+        - curl localhost:3001
+        - curl localhost:3002
+step 2 : install nginx 
+        - sudo yum install nginx -y
+        - sudo systemctl start nginx
+        - sudo systemctl enable nginx
+        - curl localhost
+step 3 : configure nginx loadbalancer
+        -  add loadbalancer file
+        - sudo vim /etc/nginx/conf.d/loadbalancer.conf
+        - upstream backend {
+                server 127.0.0.1:3001 max_fails=3 fail_timeout=10s;
+                server 127.0.0.1:3002 max_fails=3 fail_timeout=10s;
+         }
+
+            server {
+                listen 80;
+
+                location / {
+                    proxy_pass http://backend;
+                    proxy_set_header Host $host;
+                    proxy_set_header X-Real-IP $remote_addr;
+                }
+            }
+step 4 : Text ngnix configuration
+        - sudo nginx -t
+step 5 : Restart nginix
+        - sudo systemctl restart nginx
+
+
+
+step 6 : hit api
+
+---------------- to check the load lanace logs ------------------
+edit nginix.conf file
+sudo vim /etc/nginx/nginx.conf
+Inside http {} block, update log_format like this:
+
+log_format main
+'$remote_addr - [$time_local] '
+'"$request" $status '
+'upstream=$upstream_addr '
+'response_time=$upstream_response_time';
+
+sudo nginx -t
+sudo systemctl restart nginx
+
+sudo tail -f /var/log/nginx/access.log
+
+

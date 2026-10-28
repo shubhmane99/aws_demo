@@ -1,0 +1,13 @@
+step 1 : add ec2 ports to security groups
+        - 3001
+        - 3002
+step2 : crate target group
+        - TCP protocol
+        - 80 port 
+        - vpc 
+step3 : register target
+        - select instance
+        - 3001
+        - 3002
+step4 : create NLB
+        - request to nlb
